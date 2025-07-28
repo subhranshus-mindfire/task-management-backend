@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.16.5"
+  },
+  "name": "assignment-9",
+  "version": "1.0.0",
+  "description": "A Task Management System",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subhranshus-mindfire/task-management-backend.git"
+  },
+  "author": "Subhranshu Sahoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subhranshus-mindfire/task-management-backend/issues"
+  },
+  "homepage": "https://github.com/subhranshus-mindfire/task-management-backend#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0"
+  }
+}

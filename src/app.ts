@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import { setupSwagger } from './config/swagger';
 import authRoutes from './routes/auth.routes';
 import projectRoutes from "./routes/project.routes"
+import projectMemberRoutes from './routes/projectMember.routes';
+
 
 const app: Application = express();
 
@@ -18,6 +20,7 @@ setupSwagger(app);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/project-members', projectMemberRoutes);
 
 
 export default app;

@@ -95,3 +95,23 @@ export const getProjectsByMemberId = async (req: Request, res: Response, next: N
     next(err);
   }
 };
+
+export const removeMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { projectId, userId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId) || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid IDs.' });
+    }
+
+    const removed = await ProjectMember.findOneAndDelete({ projectId, userId });
+
+    if (!removed) {
+      return res.status(404).json({ message: 'Membership not found.' });
+    }
+
+    res.json({ message: 'Member removed from project.', removed });
+  } catch (err) {
+    next(err);
+  }
+};

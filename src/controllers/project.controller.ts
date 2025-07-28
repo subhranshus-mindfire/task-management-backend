@@ -2,8 +2,9 @@ import type { Request, Response, NextFunction } from 'express';
 import { Project } from '../models/Project';
 import { ProjectMember } from '../models/ProjectMember';
 import mongoose from 'mongoose';
+import type {AuthRequest} from "../middlewares/auth.middleware"
 
-export const createProject = async (req: Request, res: Response, next: NextFunction) => {
+export const createProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { name, description } = req.body;
     const managerId = req.user?.id;
@@ -48,7 +49,7 @@ export const listProjects = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const deleteProject = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const managerId = req.user?.id;

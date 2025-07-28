@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import {
   listMembersByProject
-} from '../controllers/projectMember.controller';
-import { authenticate } from '../middlewares/auth.middleware';
+} from '../controllers/projectMember.controller.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 

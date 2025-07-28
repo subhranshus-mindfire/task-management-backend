@@ -3,17 +3,21 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-security": "^3.0.1",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "typescript-eslint": "^8.38.0"
   },
   "name": "assignment-9",
   "version": "1.0.0",
   "description": "A Task Management System",
   "main": "server.ts",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",

@@ -1,7 +1,9 @@
 import type { Document, Types } from 'mongoose';
+import type mongoose from 'mongoose';
 import { Schema, model } from 'mongoose';
 
 export interface IProjectMember extends Document {
+  _id: mongoose.Types.ObjectId
   projectId: Types.ObjectId;
   userId: Types.ObjectId;
   joinedAt: Date;

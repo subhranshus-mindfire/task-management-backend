@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { ProjectMember } from '../models/ProjectMember';
+import { ProjectMember } from '../models/ProjectMember.js';
 
 import mongoose from 'mongoose';
 

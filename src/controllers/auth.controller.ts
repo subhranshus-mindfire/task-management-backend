@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import * as authService from '../services/auth.service';
-import { setAuthCookies } from '../utils/cookie';
+import * as authService from '../services/auth.service.js';
+import { setAuthCookies } from '../utils/cookie.js';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {

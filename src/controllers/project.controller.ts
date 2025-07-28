@@ -1,13 +1,14 @@
 import type { Request, Response, NextFunction } from 'express';
-import { Project } from '../models/Project';
-import { ProjectMember } from '../models/ProjectMember';
+import { Project } from '../models/Project.js';
+import { ProjectMember } from '../models/ProjectMember.js';
 import mongoose from 'mongoose';
-import type {AuthRequest} from "../middlewares/auth.middleware"
+import type {AuthRequest} from "../middlewares/auth.middleware.js"
 
 export const createProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { name, description } = req.body;
-    const managerId = req.user?.id;
+    console.log(req.user)
+    const managerId = req.user?.userId;
 
     const project = new Project({
       name,
@@ -52,7 +53,7 @@ export const listProjects = async (req: Request, res: Response, next: NextFuncti
 export const deleteProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const managerId = req.user?.id;
+    const managerId = req.user?.userId;
 
     const project = await Project.findById(id);
 

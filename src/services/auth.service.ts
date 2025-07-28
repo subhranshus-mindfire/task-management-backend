@@ -1,6 +1,6 @@
-import { User } from '../models/User';
-import { hashPassword, comparePasswords } from '../utils/hash';
-import { signAccessToken, signRefreshToken } from '../utils/jwt';
+import { User } from '../models/User.js';
+import { hashPassword, comparePasswords } from '../utils/hash.js';
+import { signAccessToken, signRefreshToken } from '../utils/jwt.js';
 
 export const registerUser = async (name: string, email: string, password: string, role: string) => {
   const existing = await User.findOne({ email });

@@ -1,12 +1,14 @@
 import type { Request, Response, NextFunction } from 'express';
-import { Project } from '../models/Project';
-import { ProjectMember } from '../models/ProjectMember';
+import { Project } from '../models/Project.js';
+import { ProjectMember } from '../models/ProjectMember.js';
 import mongoose from 'mongoose';
+import type {AuthRequest} from "../middlewares/auth.middleware.js"
 
-export const createProject = async (req: Request, res: Response, next: NextFunction) => {
+export const createProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { name, description } = req.body;
-    const managerId = req.user?.id;
+    console.log(req.user)
+    const managerId = req.user?.userId;
 
     const project = new Project({
       name,
@@ -48,10 +50,10 @@ export const listProjects = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const deleteProject = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const managerId = req.user?.id;
+    const managerId = req.user?.userId;
 
     const project = await Project.findById(id);
 
@@ -91,6 +93,26 @@ export const getProjectsByMemberId = async (req: Request, res: Response, next: N
     const projects = await Project.find({ _id: { $in: projectIds } }).populate('managerId');
 
     res.json(projects);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const removeMember = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { projectId, userId } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId) || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid IDs.' });
+    }
+
+    const removed = await ProjectMember.findOneAndDelete({ projectId, userId });
+
+    if (!removed) {
+      return res.status(404).json({ message: 'Membership not found.' });
+    }
+
+    res.json({ message: 'Member removed from project.', removed });
   } catch (err) {
     next(err);
   }

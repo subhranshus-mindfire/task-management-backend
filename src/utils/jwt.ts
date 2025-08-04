@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || '12345678';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || '123456';
 
 export const signAccessToken = (payload: object) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
 };
 
 export const signRefreshToken = (payload: object) => {

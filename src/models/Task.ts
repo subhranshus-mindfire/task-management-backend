@@ -21,7 +21,7 @@ const taskSchema = new Schema<ITask>(
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
     description: String,
-    status: { type: String, enum: Object.values(StatusEnum), default: StatusEnum.BACKLOG },
+    status: { type: String, enum: Object.values(StatusEnum), default: StatusEnum.INCOMPLETE },
     dueDate: Date,
   },
   { timestamps: true }

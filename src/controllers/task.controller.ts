@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { Task } from '../models/Task.js';
-import type { AuthRequest } from '../middlewares/auth.middleware.js';
+import type { AuthRequest } from '../types/type.js';
+import { ProjectMember } from '../models/ProjectMember.js';
 
 export const createTask = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -70,3 +71,28 @@ export const deleteTask = async (req: Request, res: Response, next: NextFunction
     next(err);
   }
 };
+
+export const getTasksByMember = async (req: AuthRequest, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const memberships = await ProjectMember.find({ userId });
+    const projectIds = memberships.map((m) => m.projectId);
+
+    const tasks = await Task.find({ projectId: { $in: projectIds } })
+      .populate({
+        path: 'projectId',
+        select: 'name description', 
+      })
+      .populate({
+        path: 'createdBy',
+        select: 'name email', 
+      });
+
+    res.json(tasks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+

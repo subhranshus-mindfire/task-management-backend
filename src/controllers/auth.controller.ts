@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as authService from '../services/auth.service.js';
 import { setAuthCookies } from '../utils/cookie.js';
+import type { AuthRequest } from '../types/type.js';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -40,3 +41,12 @@ export const logout = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Logged out successfully.' });
 };
 
+
+export const getMyInfo = (req: AuthRequest, res: Response) => {
+  if (req.user) {
+    res.status(200).json(req.user)
+  }
+  else {
+    res.status(401).json({ message: "Not Authorized" })
+  }
+}

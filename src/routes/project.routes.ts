@@ -7,7 +7,7 @@ import {
   getProjectsByMemberId,
   removeMember,
 } from '../controllers/project.controller.js';
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { authenticate, authorize } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -43,7 +43,7 @@ const router = Router();
  *       201:
  *         description: Project created successfully
  */
-router.post('/', authenticate, createProject);
+router.post('/', authenticate, authorize("manager"), createProject);
 
 /**
  * @swagger
@@ -71,7 +71,7 @@ router.post('/', authenticate, createProject);
  *       201:
  *         description: Member added successfully
  */
-router.post('/add-member', authenticate, addMember);
+router.post('/add-member', authenticate, authorize("manager"), addMember);
 
 /**
  * @swagger
@@ -99,7 +99,7 @@ router.post('/add-member', authenticate, addMember);
  *       200:
  *         description: Member removed successfully
  */
-router.delete('/remove', authenticate, removeMember);
+router.delete('/remove-member', authenticate, authorize("manager"), removeMember);
 
 /**
  * @swagger
@@ -133,7 +133,7 @@ router.get('/', authenticate, listProjects);
  *       200:
  *         description: List of projects for the member
  */
-router.get('/by-member/:memberId', authenticate, getProjectsByMemberId);
+router.get('/by/:memberId', authenticate, getProjectsByMemberId);
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ router.get('/by-member/:memberId', authenticate, getProjectsByMemberId);
  *       200:
  *         description: Project deleted successfully
  */
-router.delete('/:id', authenticate, deleteProject);
+router.delete('/:id', authenticate, authorize("manager"), deleteProject);
 
 export default router;
 

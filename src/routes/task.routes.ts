@@ -4,6 +4,7 @@ import {
   getTasksByProject,
   updateTaskStatus,
   deleteTask,
+  getTasksByMember,
 } from '../controllers/task.controller.js';
 import { authenticate } from '../middlewares/auth.middleware.js';
 
@@ -126,5 +127,8 @@ router.patch('/:taskId/status', authenticate, updateTaskStatus);
  *         description: Task not found
  */
 router.delete('/:taskId', authenticate, deleteTask);
+
+
+router.get('/by-member/:userId', authenticate, getTasksByMember);
 
 export default router;

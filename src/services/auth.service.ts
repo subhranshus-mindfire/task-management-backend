@@ -13,7 +13,7 @@ export const registerUser = async (name: string, email: string, password: string
   const newUser = new User({ name, email, passwordHash, role });
   await newUser.save();
 
-  const payload = { userId: newUser._id, role: newUser.role };
+  const payload = { userId: newUser._id, role: newUser.role, name: newUser.name, email: newUser.email };
 
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
@@ -32,7 +32,7 @@ export const loginUser = async (email: string, password: string) => {
     throw new Error('Invalid credentials.');
   }
 
-  const payload = { userId: user._id, role: user.role };
+  const payload = { userId: user._id, role: user.role, name: user.name, email: user.email };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 

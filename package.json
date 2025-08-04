@@ -13,7 +13,8 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start:cron": "tsx watch src/cron.ts"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
+    "node-cron": "^4.2.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typescript-eslint": "^8.38.0"

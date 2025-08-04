@@ -2,12 +2,11 @@ import type { Request, Response, NextFunction } from 'express';
 import { Project } from '../models/Project.js';
 import { ProjectMember } from '../models/ProjectMember.js';
 import mongoose from 'mongoose';
-import type {AuthRequest} from "../middlewares/auth.middleware.js"
+import type { AuthRequest } from '../types/type.js';
 
 export const createProject = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { name, description } = req.body;
-    console.log(req.user)
     const managerId = req.user?.userId;
 
     const project = new Project({
@@ -17,6 +16,17 @@ export const createProject = async (req: AuthRequest, res: Response, next: NextF
     });
 
     await project.save();
+
+    const projectId = project._id
+
+    const member = new ProjectMember({
+      projectId,
+      userId: managerId,
+    });
+
+    await member.save();
+
+    console.log(member)
 
     res.status(201).json(project);
   } catch (err) {
@@ -35,7 +45,7 @@ export const addMember = async (req: Request, res: Response, next: NextFunction)
 
     await member.save();
 
-    res.status(201).json(member);
+    res.status(201).json({ message: 'Member Added to the project.', member });
   } catch (err) {
     next(err);
   }
@@ -77,6 +87,7 @@ export const deleteProject = async (req: AuthRequest, res: Response, next: NextF
 export const getProjectsByMemberId = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { memberId } = req.params;
+    console.log(memberId)
 
     if (!mongoose.Types.ObjectId.isValid(memberId)) {
       return res.status(400).json({ message: 'Invalid member ID.' });
@@ -85,7 +96,7 @@ export const getProjectsByMemberId = async (req: Request, res: Response, next: N
     const memberships = await ProjectMember.find({ userId: memberId });
 
     if (!memberships.length) {
-      return res.status(404).json({ message: 'No projects found for this member.' });
+      return res.status(404).json({ message: `No projects found for this member.${memberId}` });
     }
 
     const projectIds = memberships.map((m) => m.projectId);

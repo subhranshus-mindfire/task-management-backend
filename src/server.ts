@@ -14,11 +14,10 @@ const startServer = async () => {
     console.log('Connected to MongoDB');
 
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    process.exit(1); 
+    process.exit(1);
   }
 };
 

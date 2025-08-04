@@ -25,9 +25,7 @@ export const createProject = async (req: AuthRequest, res: Response, next: NextF
     });
 
     await member.save();
-
-    console.log(member)
-
+    
     res.status(201).json(project);
   } catch (err) {
     next(err);
@@ -38,18 +36,21 @@ export const addMember = async (req: Request, res: Response, next: NextFunction)
   try {
     const { projectId, userId } = req.body;
 
-    const member = new ProjectMember({
-      projectId,
-      userId,
-    });
+    // Check for existing membership
+    const existing = await ProjectMember.findOne({ projectId, userId });
+    if (existing) {
+      return res.status(409).json({ message: 'Member already added to this project.' });
+    }
 
+    const member = new ProjectMember({ projectId, userId });
     await member.save();
 
-    res.status(201).json({ message: 'Member Added to the project.', member });
+    res.status(201).json({ message: 'Member added to the project.', member });
   } catch (err) {
     next(err);
   }
 };
+
 
 export const listProjects = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -87,7 +88,6 @@ export const deleteProject = async (req: AuthRequest, res: Response, next: NextF
 export const getProjectsByMemberId = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { memberId } = req.params;
-    console.log(memberId)
 
     if (!mongoose.Types.ObjectId.isValid(memberId)) {
       return res.status(400).json({ message: 'Invalid member ID.' });
@@ -111,19 +111,19 @@ export const getProjectsByMemberId = async (req: Request, res: Response, next: N
 
 export const removeMember = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { projectId, userId } = req.body;
+    const { projectId, memberId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(projectId) || !mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: 'Invalid IDs.' });
+    if (!mongoose.Types.ObjectId.isValid(projectId) || !mongoose.Types.ObjectId.isValid(memberId)) {
+      return res.status(400).json({ message: 'Invalid projectId or memberId.' });
     }
 
-    const removed = await ProjectMember.findOneAndDelete({ projectId, userId });
+    const removed = await ProjectMember.findOneAndDelete({ projectId, userId: memberId });
 
     if (!removed) {
       return res.status(404).json({ message: 'Membership not found.' });
     }
 
-    res.json({ message: 'Member removed from project.', removed });
+    res.status(200).json({ message: 'Member removed from project.', removed });
   } catch (err) {
     next(err);
   }

@@ -75,31 +75,37 @@ router.post('/add-member', authenticate, authorize("manager"), addMember);
 
 /**
  * @swagger
- * /api/projects/remove:
+ * /api/projects/{projectId}/members/{memberId}:
  *   delete:
  *     summary: Remove a member from a project
  *     tags: [Projects]
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               projectId:
- *                 type: string
- *               userId:
- *                 type: string
- *             required:
- *               - projectId
- *               - userId
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the project
+ *       - in: path
+ *         name: memberId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the member to be removed
  *     responses:
  *       200:
  *         description: Member removed successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Project or member not found
  */
-router.delete('/remove-member', authenticate, authorize("manager"), removeMember);
+
+router.delete(`/:projectId/members/:memberId`, authenticate, authorize("manager"), removeMember);
 
 /**
  * @swagger

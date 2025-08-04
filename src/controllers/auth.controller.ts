@@ -21,7 +21,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -31,7 +31,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     res.status(200).json({ message: 'Login successful.', userId: user._id });
   } catch (err) {
-    next(err);
+    const error = err as Error;
+    res.status(401).json({ message: error.message });
   }
 };
 

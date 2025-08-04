@@ -24,12 +24,12 @@ export const registerUser = async (name: string, email: string, password: string
 export const loginUser = async (email: string, password: string) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('Invalid credentials.');
+    throw new Error('Invalid Email.');
   }
 
   const isMatch = await comparePasswords(password, user.passwordHash);
   if (!isMatch) {
-    throw new Error('Invalid credentials.');
+    throw new Error('Invalid Password.');
   }
 
   const payload = { userId: user._id, role: user.role, name: user.name, email: user.email };
